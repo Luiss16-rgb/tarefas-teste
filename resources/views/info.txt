@@ -1,0 +1,37 @@
+Navbar
+
+Nome da aplicação / logo à esquerda (ex: "Gestão de Tarefas")
+Links de navegação: Tarefas e Categorias
+
+
+Parte branca (conteúdo principal)
+Topo da página:
+
+Título "Tarefas"
+Botão "Nova Tarefa" alinhado à direita
+
+Filtros e pesquisa:
+
+Botões de filtro lado a lado: Todas Não Concluídas Por Iniciar
+Barra de pesquisa ao lado ou em baixo dos filtros
+
+Lista de tarefas (cards):
+Cada card podia ter:
+
+Título da tarefa
+Categoria (ex: badge colorida)
+Estado (ex: badge com cor diferente por estado)
+Descrição resumida
+Data de criação
+Botões de ação: Ver Editar Eliminar
+Botões de estado: Iniciar ou Concluir dependendo do estado atual
+
+
+Dica para os botões de estado
+Não faz sentido mostrar Iniciar numa tarefa já "Em Curso", por isso podes mostrar condicionalmente:
+
+Estado "Por Iniciar" → mostrar botão Iniciar
+Estado "Em Curso" → mostrar botão Concluir
+Estado "Concluída" → sem botões de estado
+
+cor: [#000080]
