@@ -5,7 +5,7 @@ use App\Http\Controllers\TarefaController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('tarefas.index');
+    return redirect()->route('tarefas.index');
 });
 
 Route::resource('categorias', CategoriaController::class);
