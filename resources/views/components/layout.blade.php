@@ -1,6 +1,8 @@
 @props([
     'title' => 'Tarefas',
-    'categorias' => collect(),
+    'flex' => '',
+    'bgHover' => '#f0f0f0',
+    'categorias' => [],
 ])
 <!DOCTYPE html>
 <html lang="pt">
@@ -9,6 +11,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -25,35 +28,43 @@
             padding: 0;
         }
 
-        .card:hover {
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transform: translateY(-5px);
-            transition: all 0.3s ease;
-            cursor: pointer;
+        .criarNovo:hover {
+            background-color: #fde047;
+        }
+        .porIniciar:hover {
+            background-color: #f0f0f0;
+        }
+        .emCurso:hover {
+            background-color: #fde047;
+        }
+        .concluida:hover {
+            background-color: #4ade80;
         }
     </style>
 </head>
 
-<body>
+<body {{ $flex }}>
     <div class="flex min-h-screen">
         <ul class="menu bg-base-200 rounded-box w-56">
             <h2 class="menu-title">Gestão de Tarefas</h2>
-            <li><a>Item 1</a></li>
+            <li><a href="{{ route('tarefas.create') }}">Criar Tarefa<i class="fi fi-rr-add flex items-center"></i></a></li>
+            <li><a href="{{ route('categorias.create') }}">Criar Categoria<i class="fi fi-rr-add flex items-center"></i></a></li>
+            <br>
             <li>
                 <details open>
                     <summary>Categorias</summary>
                     <ul>
+                        <li><a>Todas as Tarefas</a></li>
                         @foreach ($categorias as $categoria)
                             <li><a>{{ $categoria->nomeCategoria }}</a></li>
                         @endforeach
                     </ul>
                 </details>
             </li>
-            <li><a>Item 3</a></li>
         </ul>
-        <div class="flex-1 p-4 overflow-auto">
-            {{ $slot }}
-        </div>
+    </div>
+    <div class="flex-1 p-4 overflow-auto aling-items">
+        {{ $slot }}
     </div>
 </body>
 

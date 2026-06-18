@@ -11,6 +11,7 @@ class TarefaController extends Controller
     /**
      * Display a listing of the resource.
      */
+
     public function index(Request $request)
     {
         $query = Tarefa::with('categoria')->latest();
@@ -62,7 +63,8 @@ class TarefaController extends Controller
      */
     public function show(Tarefa $tarefa)
     {
-        return view('tarefas.show', compact('tarefa'));
+        $categorias = Categoria::all();
+        return view('tarefas.show', compact('tarefa', 'categorias'));
     }
 
     /**
@@ -105,12 +107,14 @@ class TarefaController extends Controller
     public function iniciar(Tarefa $tarefa)
     {
         $tarefa->update(['estado' => 'Em Curso']);
-        return redirect()->route('tarefas.index');
+
+        return redirect()->route('tarefas.show', $tarefa->id);
     }
 
     public function concluir(Tarefa $tarefa)
     {
         $tarefa->update(['estado' => 'Concluída']);
+
         return redirect()->route('tarefas.index')->with('success', 'Tarefa concluída com sucesso!');
     }
 }

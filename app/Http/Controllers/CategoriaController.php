@@ -22,7 +22,8 @@ class CategoriaController extends Controller
      */
     public function create()
     {
-        return view('categorias.create');
+        $categorias = Categoria::all();
+        return view('categorias.create', compact('categorias'));
     }
 
     /**
@@ -36,7 +37,7 @@ class CategoriaController extends Controller
 
         Categoria::create($request->all());
 
-        return redirect()->route('categorias.index');
+        return redirect()->route('tarefas.index')->with('success', 'Categoria criada com sucesso!');
     }
 
     /**
