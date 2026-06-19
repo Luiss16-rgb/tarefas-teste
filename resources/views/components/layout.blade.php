@@ -40,6 +40,10 @@
         .concluida:hover {
             background-color: #4ade80;
         }
+        .btnHover:hover {
+            transform: scale(1.05);
+            transition: transform 0.2s ease-in-out;
+        }
     </style>
 </head>
 
@@ -47,6 +51,7 @@
     <div class="flex min-h-screen">
         <ul class="menu bg-base-200 rounded-box w-56">
             <h2 class="menu-title">Gestão de Tarefas</h2>
+            {{ $search ?? '' }}
             <li><a href="{{ route('tarefas.create') }}">Criar Tarefa<i class="fi fi-rr-add flex items-center"></i></a></li>
             <li><a href="{{ route('categorias.create') }}">Criar Categoria<i class="fi fi-rr-add flex items-center"></i></a></li>
             <br>
@@ -54,7 +59,7 @@
                 <details open>
                     <summary>Categorias</summary>
                     <ul>
-                        <li><a>Todas as Tarefas</a></li>
+                        <li><a href="{{ route('tarefas.index') }}">Todas as Tarefas</a></li>
                         @foreach ($categorias as $categoria)
                             <li><a>{{ $categoria->nomeCategoria }}</a></li>
                         @endforeach

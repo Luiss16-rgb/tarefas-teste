@@ -25,6 +25,15 @@ class TarefaController extends Controller
                 ->orWhere('descricao', 'like', '%'.$request->pesquisa.'%');
         }
 
+        $validatedData = $request->validate([
+            'search' => 'nullable|string|max:255',
+        ]);
+        $search = $validatedData['search'] ?? '';
+        $tarefas = Tarefa::where('tarefa', 'like', "%{$search}%")
+            ->orderBy('tarefa', 'asc')
+            ->get();
+
+
         $tarefas = $query->get();
         $categorias = Categoria::all();
 
@@ -49,8 +58,8 @@ class TarefaController extends Controller
     {
         $request->validate([
             'tarefa' => 'required|max:50',
-            'descricao' => 'nullable|max:255',
-            'categoria_id' => 'required|exists:categorias,id',
+            'descricao' => 'required|max:255',
+            'categoria_id' => 'nullable|exists:categorias,id',
         ]);
 
         Tarefa::create($request->all());
@@ -84,8 +93,8 @@ class TarefaController extends Controller
     {
         $request->validate([
             'tarefa' => 'required|max:50',
-            'descricao' => 'nullable|max:255',
-            'categoria_id' => 'required|exists:categorias,id',
+            'descricao' => 'required|max:255',
+            'categoria_id' => 'nullable|exists:categorias,id',
         ]);
 
         $tarefa->update($request->all());
@@ -101,7 +110,7 @@ class TarefaController extends Controller
     {
         $tarefa->delete();
 
-        return redirect()->route('tarefas.index')->with('success', 'Tarefa excluída com sucesso!');
+        return redirect()->route('tarefas.index')->with('success_del', 'Tarefa excluída com sucesso!');
     }
 
     public function iniciar(Tarefa $tarefa)
@@ -115,6 +124,6 @@ class TarefaController extends Controller
     {
         $tarefa->update(['estado' => 'Concluída']);
 
-        return redirect()->route('tarefas.index')->with('success', 'Tarefa concluída com sucesso!');
+        return redirect()->route('tarefas.index')->with('success', 'Tarefa concluída!');
     }
 }

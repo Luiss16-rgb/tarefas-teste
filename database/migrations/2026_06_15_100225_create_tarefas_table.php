@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('tarefas', function (Blueprint $table) {
             $table->id();
             $table->string('tarefa');
-            $table->text('descricao')->nullable();
-            $table->foreignId('categoria_id')->constrained('categorias')->onDelete('restrict');
+            $table->text('descricao');
+            $table->foreignId('categoria_id')->nullable()->constrained('categorias')->onDelete('restrict');
             $table->enum('estado', ['Por Iniciar', 'Em Curso', 'Concluída'])->default('Por Iniciar');
             $table->timestamps();
         });
