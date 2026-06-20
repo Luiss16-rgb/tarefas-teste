@@ -1,19 +1,5 @@
 <x-layout title="Tarefas" :categorias="$categorias">
-    <x-slot name="search">
-        <div class="flex justify-between my-4 mx-40">
-            <form action="{{ route('tarefas.index') }}" method="GET" class="w-full">
-                <div class="flex flex-row">
-                    <input type="text" name="search" placeholder="Pesquisar contactos..." class="input input-bordered text-black"
-                        value="{{ request('search') }}">
-                    <button type="submit" class="btn btn-outline">Pesquisar</button>
-                </div>
-            </form> 
-        </div>
-    </x-slot>
-
-
-
-    @if (session('success'))
+     @if (session('success'))
         <div class="alert alert-success mb-4 text-white !p-2">
             {{ session('success') }}
         </div>
@@ -42,10 +28,12 @@
             <x-card nome="{{ $tarefa->tarefa }}" descricao="{{ $tarefa->descricao }}"
                 data="{{ $tarefa->updated_at->format('d/m/Y') }}" bg="{{ $bg }}" estado="{{ $estado }}">
                 <a href="{{ route('tarefas.edit', $tarefa->id) }}">
-                    <x-btn class="bg-blue-500 btnHover h-full min-w-[3rem] min-h-[2rem]"><i class="fa-solid fa-pen"></i></x-btn>
+                    <x-btn class="bg-blue-500 btnHover h-full min-w-[3rem] min-h-[2rem]"><i
+                            class="fa-solid fa-pen"></i></x-btn>
                 </a>
                 <a href="{{ route('tarefas.show', $tarefa->id) }}">
-                    <x-btn class="bg-blue-500 btnHover h-full min-w-[3rem] min-h-[2rem]"><i class="fa-solid fa-eye"></i></x-btn>
+                    <x-btn class="bg-blue-500 btnHover h-full min-w-[3rem] min-h-[2rem]"><i
+                            class="fa-solid fa-eye"></i></x-btn>
                 </a>
                 <form action="{{ route('tarefas.destroy', $tarefa->id) }}" method="POST"
                     onsubmit="return confirm('Tem certeza que deseja excluir esta tarefa?');">

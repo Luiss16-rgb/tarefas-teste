@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Categoria;
+use App\Models\Tarefa;
 use Illuminate\Http\Request;
 
 class CategoriaController extends Controller
@@ -10,11 +11,18 @@ class CategoriaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $categorias = Categoria::all();
+        $query = Tarefa::query();
 
-        return view('categorias.index', compact('categorias'));
+        if ($request->has('categoria_id') && $request->categoria_id != '') {
+            $query->where('categoria_id', $request->categoria_id);
+        }
+
+        $tarefas = $query->get();
+
+        return view('tarefas.index', compact('categorias', 'tarefas'));
     }
 
     /**

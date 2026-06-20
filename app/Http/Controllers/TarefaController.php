@@ -14,25 +14,28 @@ class TarefaController extends Controller
 
     public function index(Request $request)
     {
+        $validatedData = $request->validate([
+            'search' => 'nullable|string|max:255',
+        ]);
         $query = Tarefa::with('categoria')->latest();
 
         if ($request->filtro == 'nao_concluidas') {
             $query->where('estado', '!=', 'Concluída');
         } elseif ($request->filtro == 'por_iniciar') {
             $query->where('estado', 'Por Iniciar');
-        } elseif ($request->pesquisa) {
-            $query->where('tarefa', 'like', '%'.$request->pesquisa.'%')
-                ->orWhere('descricao', 'like', '%'.$request->pesquisa.'%');
+        } elseif ($request->filtro == 'em_curso') {
+            $query->where('estado', 'Em Curso');
+        } elseif ($request->filtro == 'concluidas') {
+            $query->where('estado', 'Concluída');
         }
 
-        $validatedData = $request->validate([
-            'search' => 'nullable|string|max:255',
-        ]);
         $search = $validatedData['search'] ?? '';
-        $tarefas = Tarefa::where('tarefa', 'like', "%{$search}%")
-            ->orderBy('tarefa', 'asc')
-            ->get();
-
+        if ($search){
+            $query->where(function ($q) use ($search) {
+                $q->where('tarefa', 'like', "%{$search}%")
+                    ->orWhere('descricao', 'like', "%{$search}%");
+            });
+        }
 
         $tarefas = $query->get();
         $categorias = Categoria::all();
@@ -122,6 +125,7 @@ class TarefaController extends Controller
 
     public function concluir(Tarefa $tarefa)
     {
+        $tarefa->categorias()->sync([]);
         $tarefa->update(['estado' => 'Concluída']);
 
         return redirect()->route('tarefas.index')->with('success', 'Tarefa concluída!');
