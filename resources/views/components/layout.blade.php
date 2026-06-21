@@ -3,6 +3,7 @@
     'flex' => '',
     'bgHover' => '#f0f0f0',
     'categorias' => [],
+    'totalTarefas' => '',
 ])
 <!DOCTYPE html>
 <html lang="pt">
@@ -12,7 +13,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/4.0.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel='stylesheet'
+        href='https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/4.0.0/uicons-thin-rounded/css/uicons-thin-rounded.css'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
@@ -66,35 +68,67 @@
                             <path d="m21 21-4.3-4.3"></path>
                         </g>
                     </svg>
-                    <input type="search" name="search" placeholder="Search" value="{{ request('search') }}" />
+                    <input type="search" name="search" placeholder="Pesquisar" value="{{ request('search') }}" />
                 </label>
             </form>
             <br>
-            <li><a href="{{ route('tarefas.create') }}"><i class="fi fi-rr-add flex items-center"></i>Criar Tarefa</a>
+            <li><a href="{{ route('tarefas.create') }}"
+                    class="{{ Route::is('tarefas.create') ? 'menu-active' : '' }}"><i
+                        class="fi fi-rr-add flex items-center"></i>Criar Tarefa</a>
             </li>
-            <li><a href="{{ route('categorias.create') }}"><i class="fi fi-rr-add flex items-center"></i>Criar Categoria</a></li>
+            <li>
+                <details closed>
+                    <summary><i class="fi fi-rr-folder-plus-circle flex items-center"></i>Criar Categoria</summary>
+                    <ul>
+                        <li>
+                            <form action="{{ route('categorias.store') }}" method="POST" class="pr-1 w-full block">
+                                @csrf
+                                <input type="text" name="nomeCategoria" placeholder="Categoria"
+                                    class="input input-sm outline-none !w-full" required />
+
+                            </form>
+                        </li>
+                    </ul>
+
+                </details>
+            </li>
             <br>
-            <li><a href="{{ route('tarefas.index') }}">Ver as Tarefas</a></li>
+            <li><a href="{{ route('tarefas.index') }}"
+                    class="font-semibold {{ Route::is('tarefas.index') && !request('filtro') && !request('categoria_id') ? 'menu-active' : '' }}"><i
+                        class="fi fi-rr-list flex items-center"></i>Ver Todos ({{ $totalTarefas }})</a></li>
             <br>
             <li>
                 <details open>
-                    <summary>Estados</summary>
+                    <summary><i class="fi fi-rr-clock flex items-center"></i>Estados</summary>
                     <ul>
-                        <li><a href="{{ route('tarefas.index', ['filtro' => 'nao_concluidas']) }}">Não Concluídas</a></li>
-                        <li><a href="{{ route('tarefas.index', ['filtro' => 'por_iniciar']) }}">Por Iniciar</a></li>
-                        <li><a href="{{ route('tarefas.index', ['filtro' => 'em_curso']) }}">Em Curso</a></li>
-                        <li><a href="{{ route('tarefas.index', ['filtro' => 'concluidas']) }}">Concluídas</a></li>
+                        <li><a href="{{ route('tarefas.index', ['filtro' => 'nao_concluidas']) }}"
+                                class="{{ request('filtro') == 'nao_concluidas' ? 'menu-active' : '' }}">Não
+                                Concluídas</a></li>
+                        <li><a href="{{ route('tarefas.index', ['filtro' => 'por_iniciar']) }}"
+                                class="{{ request('filtro') == 'por_iniciar' ? 'menu-active' : '' }}">Por Iniciar</a>
+                        </li>
+                        <li><a href="{{ route('tarefas.index', ['filtro' => 'em_curso']) }}"
+                                class="{{ request('filtro') == 'em_curso' ? 'menu-active' : '' }}">Em Curso</a></li>
+                        <li><a href="{{ route('tarefas.index', ['filtro' => 'concluidas']) }}"
+                                class="{{ request('filtro') == 'concluidas' ? 'menu-active' : '' }}">Concluídas</a>
+                        </li>
                     </ul>
                 </details>
             </li>
             <li>
                 <details open>
-                    <summary>Categorias</summary>
+                    <summary><i class="fi fi-rr-folder flex items-center"></i>Categorias</summary>
                     <ul>
+                        <li>
+                            <a href="{{ route('categorias.index') }}">Ver Categorias</a>
+                        </li>
                         @foreach ($categorias as $categoria)
-                            <li><a href="{{ route('categorias.index', ['categoria_id' => $categoria->id]) }}">
-                                    {{ $categoria->nomeCategoria }}
-                                </a></li>
+                            <li>
+                                <a href="{{ route('categorias.index', ['categoria_id' => $categoria->id]) }}"
+                                    class="{{ request('categoria_id') == $categoria->id ? 'menu-active' : '' }}">
+                                    {{ $categoria->nomeCategoria }} ({{ $categoria->tarefas_count }})
+                                </a>
+                            </li>
                         @endforeach
                     </ul>
                 </details>

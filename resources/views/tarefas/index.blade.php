@@ -1,4 +1,4 @@
-<x-layout title="Tarefas" :categorias="$categorias">
+<x-layout title="Tarefas" :categorias="$categorias" :totalTarefas="$totalTarefas">
      @if (session('success'))
         <div class="alert alert-success mb-4 text-white !p-2">
             {{ session('success') }}

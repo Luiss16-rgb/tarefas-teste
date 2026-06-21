@@ -18,6 +18,7 @@ class TarefaController extends Controller
             'search' => 'nullable|string|max:255',
         ]);
         $query = Tarefa::with('categoria')->latest();
+        $totalTarefas = Tarefa::count();
 
         if ($request->filtro == 'nao_concluidas') {
             $query->where('estado', '!=', 'Concluída');
@@ -38,9 +39,9 @@ class TarefaController extends Controller
         }
 
         $tarefas = $query->get();
-        $categorias = Categoria::all();
+        $categorias = Categoria::withCount('tarefas')->get();
 
-        return view('tarefas.index', compact('tarefas', 'categorias'));
+        return view('tarefas.index', compact('tarefas', 'categorias', 'totalTarefas'));
 
     }
 
@@ -49,9 +50,10 @@ class TarefaController extends Controller
      */
     public function create()
     {
-        $categorias = Categoria::all();
+        $categorias = Categoria::withCount('tarefas')->get();
+        $totalTarefas = Tarefa::count();
 
-        return view('tarefas.create', compact('categorias'));
+        return view('tarefas.create', compact('categorias', 'totalTarefas'));
     }
 
     /**
@@ -75,8 +77,10 @@ class TarefaController extends Controller
      */
     public function show(Tarefa $tarefa)
     {
-        $categorias = Categoria::all();
-        return view('tarefas.show', compact('tarefa', 'categorias'));
+        $categorias = Categoria::withCount('tarefas')->get();
+        $totalTarefas = Tarefa::count();
+
+        return view('tarefas.show', compact('tarefa', 'categorias', 'totalTarefas'));
     }
 
     /**
@@ -84,9 +88,10 @@ class TarefaController extends Controller
      */
     public function edit(Tarefa $tarefa)
     {
-        $categorias = Categoria::all();
+        $categorias = Categoria::withCount('tarefas')->get();
+        $totalTarefas = Tarefa::count();
 
-        return view('tarefas.edit', compact('tarefa', 'categorias'));
+        return view('tarefas.edit', compact('tarefa', 'categorias', 'totalTarefas'));
     }
 
     /**

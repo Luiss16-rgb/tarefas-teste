@@ -1,4 +1,4 @@
-<x-layout title="Tarefa {{ $tarefa->tarefa }}" :categorias="$categorias">
+<x-layout title="Tarefa {{ $tarefa->tarefa }}" :categorias="$categorias" :totalTarefas="$totalTarefas">
     <a href="{{ route('tarefas.index') }}">
         <i class="fi fi-rr-arrow-small-left !text-[35px] !p-2"></i>
     </a>

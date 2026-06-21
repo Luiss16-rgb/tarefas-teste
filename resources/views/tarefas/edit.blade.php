@@ -1,42 +1,45 @@
-<x-layout title="Editar Tarefa" :categorias="$categorias" flex="flex justify-center">
-    <a href="{{ route('tarefas.index', $tarefa->id) }}">
+<x-layout title="Criar Tarefa" :categorias="$categorias" :totalTarefas="$totalTarefas" flex="flex justify-center">
+    <a href="{{ route('tarefas.index') }}">
         <i class="fi fi-rr-arrow-small-left !text-[35px] !p-2"></i>
     </a>
-    <form action="{{ route('tarefas.update', $tarefa->id) }}" method="POST">
+    <form action="{{ route('tarefas.store') }}" method="POST">
         @csrf
-        @method('PUT')
-        <div class="flex align-items flex-col gap-4 justify-center">
-            <fieldset>
-                <legend class="label">Título</legend>
-                <input type="text" name="tarefa" placeholder="Nome da Tarefa"
-                    class="input input-bordered w-full max-w-xs" value="{{ old('tarefa', $tarefa->tarefa) }}">
+        <div class="flex items-center flex-col gap-4 justify-center">
+            <div class="flex flex-col items-center w-1/3 justify-center">
+                <legend class="label flex self-start">Título</legend>
+                <input type="text" name="tarefa" placeholder="Nome da Tarefa" value="{{ old('tarefa', $tarefa->tarefa) }}"
+                    class="input input-bordered w-full {{ $errors->has('tarefa') ? 'border border-red-500' : '' }}">
                 @error('tarefa')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-red-500 text-sm mt-1 flex self-start">{{ $message }}</p>
                 @enderror
-            </fieldset>
+            </div>
 
-            <fieldset>
-                <legend class="label">Categoria</legend>
-                <select name="categoria_id" class="select select-bordered w-full max-w-xs">
+            <div class="flex flex-col items-center w-1/3 justify-center">
+                <legend class="label flex self-start">Categoria</legend>
+                <select name="categoria_id" class="select select-bordered w-full {{ $errors->has('categoria_id') ? 'border border-red-500' : '' }}">
                     <option disabled selected>Escolhe uma Categoria</option>
                     @foreach ($categorias as $categoria)
-                        <option value="{{ $categoria->id }}">{{ $categoria->nomeCategoria }}</option>
+                        <option value="{{ $categoria->id }}" {{ old('categoria_id', $tarefa->categoria_id) == $categoria->id ? 'selected' : '' }}>
+                            {{ $categoria->nomeCategoria }}
+                        </option>
                     @endforeach
                 </select>
                 @error('categoria_id')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-red-500 text-sm mt-1 flex self-start">{{ $message }}</p>
                 @enderror
-            </fieldset>
+            </div>
 
-            <fieldset>
-                <legend class="label">Descrição</legend>
-                <textarea name="descricao" placeholder="Descrição da Tarefa" class="textarea textarea-bordered w-full max-w-xs">{{ old('descricao', $tarefa->descricao) }}</textarea>
+            <div class="flex flex-col items-center w-1/3 justify-center">
+                <legend class="label flex self-start">Descrição</legend>
+                <textarea name="descricao" placeholder="Descrição da Tarefa" class="textarea textarea-bordered w-full {{ $errors->has('descricao') ? 'border border-red-500' : '' }}">{{ old('descricao', $tarefa->descricao) }}</textarea>
                 @error('descricao')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-red-500 text-sm mt-1 flex self-start">{{ $message }}</p>
                 @enderror
-            </fieldset>
+            </div>
 
-            <button type="submit" class="btn">Atualizar Tarefa</button>
+            <div class="flex flex-col items-end w-1/3 justify-center">
+                <button type="submit" class="btn btn-primary">Criar Tarefa</button>
+            </div>
         </div>
     </form>
 </x-layout>

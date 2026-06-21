@@ -13,7 +13,8 @@ class CategoriaController extends Controller
      */
     public function index(Request $request)
     {
-        $categorias = Categoria::all();
+        $totalTarefas = Tarefa::count();
+        $categorias = Categoria::withCount('tarefas')->get();
         $query = Tarefa::query();
 
         if ($request->has('categoria_id') && $request->categoria_id != '') {
@@ -22,7 +23,7 @@ class CategoriaController extends Controller
 
         $tarefas = $query->get();
 
-        return view('tarefas.index', compact('categorias', 'tarefas'));
+        return view('tarefas.index', compact('categorias', 'tarefas', 'totalTarefas'));
     }
 
     /**
@@ -51,9 +52,19 @@ class CategoriaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Categoria $categoria)
+    public function show(Request $request)
     {
-        return view('categorias.show', compact('categoria'));
+        $totalTarefas = Tarefa::count();
+        $categorias = Categoria::withCount('tarefas')->get();
+        $query = Tarefa::query();
+
+        if ($request->has('categoria_id') && $request->categoria_id != '') {
+            $query->where('categoria_id', $request->categoria_id);
+        }
+
+        $tarefas = $query->get();
+
+        return view('tarefas.index', compact('categorias', 'tarefas', 'totalTarefas'));
     }
 
     /**

@@ -1,4 +1,4 @@
-<x-layout title="Criar Tarefa" :categorias="$categorias" flex="flex justify-center">
+<x-layout title="Criar Tarefa" :categorias="$categorias" :totalTarefas="$totalTarefas" flex="flex justify-center">
     <a href="{{ route('tarefas.index') }}">
         <i class="fi fi-rr-arrow-small-left !text-[35px] !p-2"></i>
     </a>
@@ -10,7 +10,7 @@
                 <input type="text" name="tarefa" placeholder="Nome da Tarefa" value="{{ old('tarefa') }}"
                     class="input input-bordered w-full {{ $errors->has('tarefa') ? 'border border-red-500' : '' }}">
                 @error('tarefa')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-red-500 text-sm mt-1 flex self-start">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -25,7 +25,7 @@
                     @endforeach
                 </select>
                 @error('categoria_id')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-red-500 text-sm mt-1 flex self-start">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -33,7 +33,7 @@
                 <legend class="label flex self-start">Descrição</legend>
                 <textarea name="descricao" placeholder="Descrição da Tarefa" class="textarea textarea-bordered w-full {{ $errors->has('descricao') ? 'border border-red-500' : '' }}">{{ old('descricao') }}</textarea>
                 @error('descricao')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-red-500 text-sm mt-1 flex self-start">{{ $message }}</p>
                 @enderror
             </div>
 
