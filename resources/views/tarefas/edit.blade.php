@@ -1,4 +1,10 @@
 <x-layout title="Criar Tarefa" :categorias="$categorias" :totalTarefas="$totalTarefas" flex="flex justify-center">
+    @if (session('success'))
+        <div class="alert alert-success mb-4 text-white !p-2">
+            {{ session('success') }}
+        </div>
+    @endif
+    
     <a href="{{ route('tarefas.index') }}">
         <i class="fi fi-rr-arrow-small-left !text-[35px] !p-2"></i>
     </a>

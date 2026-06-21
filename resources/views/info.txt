@@ -35,3 +35,13 @@ Estado "Em Curso" → mostrar botão Concluir
 Estado "Concluída" → sem botões de estado
 
 cor: [#000080]
+
+
+<a href="{{ route('tarefas.edit', $tarefa->id) }}">
+                    <x-btn class="bg-blue-500 btnHover h-full min-w-[3rem] min-h-[2rem]"><i
+                            class="fa-solid fa-pen"></i></x-btn>
+                </a>
+                <a href="{{ route('tarefas.show', $tarefa->id) }}">
+                    <x-btn class="bg-blue-500 btnHover h-full min-w-[3rem] min-h-[2rem]"><i
+                            class="fa-solid fa-eye"></i></x-btn>
+                </a>

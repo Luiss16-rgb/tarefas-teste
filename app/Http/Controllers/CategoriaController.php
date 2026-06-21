@@ -15,15 +15,8 @@ class CategoriaController extends Controller
     {
         $totalTarefas = Tarefa::count();
         $categorias = Categoria::withCount('tarefas')->get();
-        $query = Tarefa::query();
 
-        if ($request->has('categoria_id') && $request->categoria_id != '') {
-            $query->where('categoria_id', $request->categoria_id);
-        }
-
-        $tarefas = $query->get();
-
-        return view('tarefas.index', compact('categorias', 'tarefas', 'totalTarefas'));
+        return view('categorias.index', compact('categorias', 'totalTarefas'));
     }
 
     /**
@@ -46,25 +39,22 @@ class CategoriaController extends Controller
 
         Categoria::create($request->all());
 
-        return redirect()->route('tarefas.index')->with('success', 'Categoria criada com sucesso!');
+        return redirect()->back()->with('success', 'Categoria criada com sucesso!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Request $request)
+    public function show(Categoria $categoria)
     {
         $totalTarefas = Tarefa::count();
         $categorias = Categoria::withCount('tarefas')->get();
-        $query = Tarefa::query();
 
-        if ($request->has('categoria_id') && $request->categoria_id != '') {
-            $query->where('categoria_id', $request->categoria_id);
-        }
+        $categoriaAtual = $categoria;
 
-        $tarefas = $query->get();
+        $tarefas = Tarefa::where('categoria_id', $categoria->id)->get();
 
-        return view('tarefas.index', compact('categorias', 'tarefas', 'totalTarefas'));
+        return view('tarefas.index', compact('categorias', 'tarefas', 'totalTarefas', 'categoriaAtual'));
     }
 
     /**
@@ -86,7 +76,7 @@ class CategoriaController extends Controller
 
         $categoria->update($request->all());
 
-        return redirect()->route('categorias.index');
+        return redirect()->route('categorias.index')->with('success', 'Categoria atualizada com sucesso!');
     }
 
     /**
@@ -100,6 +90,6 @@ class CategoriaController extends Controller
         }
         $categoria->delete();
 
-        return redirect()->route('categorias.index');
+        return redirect()->route('categorias.index')->with('success', 'Categoria eliminada com sucesso!');
     }
 }

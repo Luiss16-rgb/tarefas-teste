@@ -14,6 +14,7 @@ class TarefaController extends Controller
 
     public function index(Request $request)
     {
+        $categoriaAtual = null;
         $validatedData = $request->validate([
             'search' => 'nullable|string|max:255',
         ]);
@@ -41,7 +42,7 @@ class TarefaController extends Controller
         $tarefas = $query->get();
         $categorias = Categoria::withCount('tarefas')->get();
 
-        return view('tarefas.index', compact('tarefas', 'categorias', 'totalTarefas'));
+        return view('tarefas.index', compact('tarefas', 'categorias', 'totalTarefas', 'categoriaAtual'));
 
     }
 
@@ -63,7 +64,7 @@ class TarefaController extends Controller
     {
         $request->validate([
             'tarefa' => 'required|max:50',
-            'descricao' => 'required|max:255',
+            'descricao' => 'required|max:1000',
             'categoria_id' => 'nullable|exists:categorias,id',
         ]);
 
@@ -101,7 +102,7 @@ class TarefaController extends Controller
     {
         $request->validate([
             'tarefa' => 'required|max:50',
-            'descricao' => 'required|max:255',
+            'descricao' => 'required|max:1000',
             'categoria_id' => 'nullable|exists:categorias,id',
         ]);
 
@@ -118,7 +119,7 @@ class TarefaController extends Controller
     {
         $tarefa->delete();
 
-        return redirect()->route('tarefas.index')->with('success_del', 'Tarefa excluída com sucesso!');
+        return redirect()->route('tarefas.index')->with('success', 'Tarefa excluída com sucesso!');
     }
 
     public function iniciar(Tarefa $tarefa)
@@ -130,7 +131,6 @@ class TarefaController extends Controller
 
     public function concluir(Tarefa $tarefa)
     {
-        $tarefa->categorias()->sync([]);
         $tarefa->update(['estado' => 'Concluída']);
 
         return redirect()->route('tarefas.index')->with('success', 'Tarefa concluída!');

@@ -4,6 +4,7 @@
     'bgHover' => '#f0f0f0',
     'categorias' => [],
     'totalTarefas' => '',
+    'categoriaAtual' => null,
 ])
 <!DOCTYPE html>
 <html lang="pt">
@@ -12,6 +13,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-straight/css/uicons-solid-straight.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/4.0.0/uicons-bold-straight/css/uicons-bold-straight.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-straight/css/uicons-regular-straight.css'>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/4.0.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
     <link rel='stylesheet'
         href='https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
@@ -120,12 +124,12 @@
                     <summary><i class="fi fi-rr-folder flex items-center"></i>Categorias</summary>
                     <ul>
                         <li>
-                            <a href="{{ route('categorias.index') }}">Ver Categorias</a>
+                            <a href="{{ route('categorias.index') }}" class="{{ Route::is('categorias.index') ? 'menu-active' : '' }}">Ver Categorias</a>
                         </li>
                         @foreach ($categorias as $categoria)
                             <li>
-                                <a href="{{ route('categorias.index', ['categoria_id' => $categoria->id]) }}"
-                                    class="{{ request('categoria_id') == $categoria->id ? 'menu-active' : '' }}">
+                                <a href="{{ route('categorias.show', $categoria->id) }}"
+                                    class="{{ (isset($categoriaAtual) && $categoriaAtual->id == $categoria->id) ? 'menu-active' : '' }} !block break-all whitespace-normal text-left">
                                     {{ $categoria->nomeCategoria }} ({{ $categoria->tarefas_count }})
                                 </a>
                             </li>
